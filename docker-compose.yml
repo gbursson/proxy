@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  nginx:
+    container_name: "proxy-nginx"
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - proxy_network
+    volumes:
+      - //d/Programming/git-repos/docker-tests/proxy/nginx-etc:/etc/nginx/
+      - //d/Programming/git-repos/docker-tests/proxy/nginx-data:/usr/share/nginx/html/
+
+  apache:
+    container_name: "apache"
+    image: httpd:alpine
+    expose:
+      - "8888"
+    networks:
+      - proxy_network
+    volumes:
+      - //d/Programming/git-repos/docker-tests/proxy/apache-etc/:/usr/local/apache2/conf/
+      - //d/Programming/git-repos/docker-tests/proxy/apache-data:/var/www/html/
+
+networks:
+  proxy_network:
+    name: "proxy_network"
+# volumes:
+#   apache-etc:
